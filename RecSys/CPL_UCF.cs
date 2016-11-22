@@ -21,11 +21,13 @@ namespace RecSys
         Dictionary<string, Tuple<double, double, string>> POIcategory;//包含train集中所有POI
 
         //记录train集中所有用户，两两之间的POI共现频率
+        // calculate co-occurance of POI between each pair of users in train set
         Dictionary<Tuple<string, string>, int> common;
 
         public void Initial(string train, string test)
         {
             //恢复已经产生的train集和test集，用于对比试验
+            // reload train set and test set
             ds.Ini_retrieve("usercheckins_train_20160314.csv", "usercheckins_test_20160314.csv");
 
             usercheckins = ds.getSplittedData().train;
@@ -36,6 +38,7 @@ namespace RecSys
 
         /// <summary>
         /// 返回train集中所有用户，两两之间的POI共现频率
+        /// return co-occurance of POI between each pair of users in train set
         /// </summary>
         /// <returns></returns>
         public Dictionary<Tuple<string, string>, int> load_common_all()
@@ -209,6 +212,7 @@ namespace RecSys
 
         /// <summary>
         /// 计算两个用户间的Jaccard相似度
+        /// calculate Jaccard similarity between user1/uid1 and user2/uid2
         /// </summary>
         /// <param name="uid1"></param>
         /// <param name="uid2"></param>
@@ -235,6 +239,7 @@ namespace RecSys
 
         /// <summary>
         /// 为指定用户返回K个最相似的用户
+        /// return top k most similar users for specified uid
         /// </summary>
         /// <param name="uid"></param>
         /// <param name="k"></param>
@@ -277,6 +282,7 @@ namespace RecSys
 
         /// <summary>
         /// 为指定用户返回推荐程度最高的n个候选项
+        /// find top n candidate items for specified user/uid
         /// </summary>
         /// <param name="uid"></param>
         /// <param name="n"></param>
@@ -325,6 +331,7 @@ namespace RecSys
 
         /// <summary>
         /// 对给定的uid，候选项集计算幂律分布评分
+        /// for given user/uid, calculate n candidate items' powerlaw distribution rating
         /// </summary>
         /// <param name="uid"></param>
         /// <param name="n">返回的推荐项数目</param>
@@ -405,6 +412,7 @@ namespace RecSys
 
         /// <summary>
         /// 返回用于计算幂律分布公式的参数c和alpha
+        /// return parameter center and alpha for power law distribution
         /// </summary>
         /// <param name="uid"></param>
         /// <returns>给定用户的幂律分布参数(C,alpha)</returns>
@@ -455,11 +463,12 @@ namespace RecSys
 
         /// <summary>
         /// 利用传入的变量x,y返回线性拟合参数theta和cost function
+        
         /// </summary>
         /// <param name="xval"></param>
         /// <param name="yval"></param>
         /// <param name="theta">返回的参数，theta1和theta2</param>
-        /// <param name="alpha">学习率，控制梯度下降的步长</param>
+        /// <param name="alpha">learning rate，控制梯度下降的步长</param>
         /// <param name="iters">指定循环次数</param>
         /// <returns></returns>
         public double[] gradientDescent(double[] xval, double[] yval, double[] theta,
@@ -515,6 +524,7 @@ namespace RecSys
 
         /// <summary>
         /// 获取指定用户，poi到最近中心的距离与签到概率的 概率密度曲线
+        /// for specified user, return distribution function as function of check-in frequency against distance of POI to nearest center
         /// </summary>
         /// <param name="uid"></param>
         /// <param name="width">带宽，用于平滑概率密度曲线</param>
